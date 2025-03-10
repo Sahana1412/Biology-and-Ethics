@@ -1,0 +1,29 @@
+function predicted_drug = predict_best_drug(mdl)
+    % PREDICT_BEST_DRUG Prompts user for gene expression levels and predicts the best drug.
+    % Inputs:
+    %   mdl - Trained machine learning model
+    %
+    % Output:
+    %   predicted_drug - Predicted best-suited drug
+
+    % Define gene names
+    genes = {'TCF7L2', 'KCNJ11', 'PPARG', 'SLC30A8', 'HHEX', 'WFS1'};
+    gene_values = zeros(1, 6);  % Initialize an array for the user input
+
+    % Get user input for each gene
+    for i = 1:6
+        gene_values(i) = input(sprintf('Enter expression level for %s (0-1): ', genes{i}));
+        
+        % Validate input (should be between 0 and 1)
+        while gene_values(i) < 0 || gene_values(i) > 1
+            fprintf('Invalid input! Please enter a value between 0 and 1.\n');
+            gene_values(i) = input(sprintf('Enter expression level for %s (0-1): ', genes{i}));
+        end
+    end
+
+    % Make prediction
+    predicted_drug = predict(mdl, gene_values);
+    
+    % Display result
+    fprintf('\nPredicted Best-Suited Drug: %s\n', string(predicted_drug));
+end
